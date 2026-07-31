@@ -31,6 +31,19 @@ const SUPPORTED_TRIGGERS = [{
     title: "Price Trigger",
     description: "runs whenever the price go above or below a certain number for an assets"
 }]
+
+const styles = {
+    sheetContent: "bg-slate-50 dark:bg-slate-900 border-l-slate-200 dark:border-l-slate-800 text-slate-900 dark:text-slate-100 shadow-2xl",
+    sheetHeader: "mb-6",
+    sheetTitle: "text-2xl font-bold bg-gradient-to-r from-emerald-500 to-cyan-500 dark:from-emerald-400 dark:to-cyan-400 bg-clip-text text-transparent",
+    sheetDesc: "text-slate-500 dark:text-slate-400 text-sm",
+    selectTrigger: "w-full bg-white dark:bg-slate-950/50 border-slate-200 dark:border-slate-800 rounded-md text-slate-900 dark:text-slate-100",
+    input: "w-full bg-white dark:bg-slate-950/50 border-slate-200 dark:border-slate-800 rounded-md text-slate-900 dark:text-slate-100",
+    label: "text-sm font-medium text-slate-700 dark:text-slate-300",
+    button: "w-full bg-gradient-to-r from-emerald-500 to-cyan-500 hover:from-emerald-600 hover:to-cyan-600 text-white font-bold shadow-lg shadow-emerald-500/25 transition-all rounded-md h-10 text-sm",
+    formContainer: "space-y-6 px-4"
+}
+
 export const TriggerSheet = ({ onSelect }: {
     onSelect: (kind: NodeKind, metadata: NodeMetadata) => void
 }) => {
@@ -53,22 +66,19 @@ export const TriggerSheet = ({ onSelect }: {
     const isTimerMetadata = (m: any): m is TimerNodeMetadata => 'time' in m;
     const isPriceMetadata = (m: any): m is PriceTriggerMetadata => 'asset' in m;
 
-    console.log(
-        "selected trigger ", selectedTrigger
-    );
     return (
         <Sheet open={true}>
             <SheetTrigger>Op en</SheetTrigger>
-            <SheetContent>
-                <SheetHeader>
-                    <SheetTitle>select Trigger</SheetTitle>
-                </SheetHeader>
-                <div className="space-y-4">
-                    <SheetDescription>
-                        select the type of trigger
+            <SheetContent className={styles.sheetContent}>
+                <SheetHeader className={styles.sheetHeader}>
+                    <SheetTitle className={styles.sheetTitle}>Select Trigger</SheetTitle>
+                    <SheetDescription className={styles.sheetDesc}>
+                        Choose the event that starts this workflow.
                     </SheetDescription>
+                </SheetHeader>
+                <div className={styles.formContainer}>
                     <Select value={selectedTrigger} onValueChange={handleTriggerChange} >
-                        <SelectTrigger className="w-full">
+                        <SelectTrigger className={styles.selectTrigger}>
                             <SelectValue placeholder="Select a trigger">
                             </SelectValue>
                         </SelectTrigger>
@@ -80,9 +90,9 @@ export const TriggerSheet = ({ onSelect }: {
                             </SelectGroup>
                         </SelectContent>
                     </Select>
-                    {selectedTrigger === "timer" && <div className="space-y-2">
-                        <div className="text-sm font-medium">Number of seconds after which to run the timer</div>
-                        <Input value={isTimerMetadata(metadata) ? metadata.time : ''} onChange={(e) => {
+                    {selectedTrigger === "timer" && <div className="space-y-1.5">
+                        <div className={styles.label}>Number of seconds after which to run the timer</div>
+                        <Input className={styles.input} value={isTimerMetadata(metadata) ? metadata.time : ''} onChange={(e) => {
                             setMetadata({
                                 time: Number(e.target.value)
                             })
@@ -90,18 +100,18 @@ export const TriggerSheet = ({ onSelect }: {
                         ></Input>
                     </div>}
                     {
-                        selectedTrigger === "price-trigger" && <div className="space-y-4">
-                            <div className="space-y-2">
-                                <div className="text-sm font-medium">Price:</div>
-                                <Input type="text" value={isPriceMetadata(metadata) ? metadata.price : ''} onChange={(e) => {
+                        selectedTrigger === "price-trigger" && <div className="space-y-3">
+                            <div className="space-y-1.5">
+                                <div className={styles.label}>Price:</div>
+                                <Input className={styles.input} type="text" value={isPriceMetadata(metadata) ? metadata.price : ''} onChange={(e) => {
                                     setMetadata({
                                         asset: isPriceMetadata(metadata) ? metadata.asset : 'ETH',
                                         price: e.target.value
                                     })
                                 }}></Input>
                             </div>
-                            <div className="space-y-2">
-                                <div className="text-sm font-medium">Asset:</div>
+                            <div className="space-y-1.5">
+                                <div className={styles.label}>Asset:</div>
                                 <Select
                                     value={isPriceMetadata(metadata) ? metadata.asset : ''}
                                     onValueChange={(value) => {
@@ -112,7 +122,7 @@ export const TriggerSheet = ({ onSelect }: {
                                         }))
                                     }}
                                 >
-                                    <SelectTrigger className="w-full">
+                                    <SelectTrigger className={styles.selectTrigger}>
                                         <SelectValue placeholder="Select an asset" />
                                     </SelectTrigger>
                                     <SelectContent>
@@ -127,9 +137,9 @@ export const TriggerSheet = ({ onSelect }: {
                         </div>
                     }
                 </div>
-                <SheetFooter>
+                <SheetFooter className="mt-6">
                     <Button
-                        className="border-red-300"
+                        className={styles.button}
                         onClick={() => {
                             const selected = SUPPORTED_TRIGGERS.find(t => t.id === selectedTrigger);
                             if (selected) {
