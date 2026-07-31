@@ -1,4 +1,4 @@
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 import {
     ReactFlow,
     applyNodeChanges,
@@ -51,7 +51,19 @@ export type NodeMetadata = any;
 function WorkflowEditor() {
     const [nodes, setNodes] = useState<NodeType[]>([]);
     const [edges, setEdges] = useState<Edge[]>([]);
-    const [theme, setTheme] = useState<"dark" | "light">("dark");
+    const [theme, setTheme] = useState<"dark" | "light">(() => {
+        return document.documentElement.classList.contains("dark") ? "dark" : "light";
+    });
+    const [isTriggerSheetOpen, setIsTriggerSheetOpen] = useState(true);
+
+    useEffect(() => {
+        if (theme === 'dark') {
+            document.documentElement.classList.add('dark');
+        } else {
+            document.documentElement.classList.remove('dark');
+        }
+    }, [theme]);
+
     const { screenToFlowPosition } = useReactFlow();
 
     const [selectAction, setSelectAction] = useState<{
@@ -113,7 +125,15 @@ function WorkflowEditor() {
 
             {/* Canvas Area */}
             <div className={`w-full flex-grow relative ${theme === 'dark' ? 'bg-[radial-gradient(ellipse_80%_80%_at_50%_-20%,rgba(120,119,198,0.15),rgba(255,255,255,0))]' : "bg-[url('/image.png')] bg-repeat"}`}>
-                {!nodes.length && (
+                {!nodes.length && !isTriggerSheetOpen && (
+                    <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-10">
+                        <button onClick={() => setIsTriggerSheetOpen(true)} className="px-6 py-3 bg-gradient-to-r from-emerald-500 to-cyan-500 text-white font-bold rounded-lg shadow-lg hover:shadow-xl transition-all hover:scale-105">
+                            Add Initial Trigger
+                        </button>
+                    </div>
+                )}
+
+                {!nodes.length && isTriggerSheetOpen && (
                     <TriggerSheet
                         onSelect={(type, metadata) => {
                             setNodes([
@@ -129,7 +149,9 @@ function WorkflowEditor() {
                                     position: { x: 0, y: 0 },
                                 },
                             ]);
+                            setIsTriggerSheetOpen(false);
                         }}
+                        onClose={() => setIsTriggerSheetOpen(false)}
                     />
                 )}
 
@@ -163,6 +185,7 @@ function WorkflowEditor() {
                             );
                             setSelectAction(null);
                         }}
+                        onClose={() => setSelectAction(null)}
                     />
                 )}
                 

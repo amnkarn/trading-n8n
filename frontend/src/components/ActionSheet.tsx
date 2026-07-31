@@ -47,8 +47,9 @@ const styles = {
     formContainer: "space-y-6 px-4"
 }
 
-export const ActionSheet = ({ onSelect }: {
-    onSelect: (type: NodeKind, metadata: NodeMetadata,) => void
+export const ActionSheet = ({ onSelect, onClose }: {
+    onSelect: (type: NodeKind, metadata: NodeMetadata,) => void,
+    onClose: () => void
 }) => {
     const [selectAction, setSelectAction] = useState(SUPPORTED_ACTION[0].id);
     const [side, setSide] = useState<"long" | "short">("long");
@@ -59,8 +60,11 @@ export const ActionSheet = ({ onSelect }: {
     });
 
     return (
-        <Sheet open={true}>
-            <SheetTrigger>Open</SheetTrigger>
+        <Sheet open={true} onOpenChange={(open) => {
+            if (!open) {
+                onClose();
+            }
+        }}>
             <SheetContent className={styles.sheetContent}>
                 <SheetHeader className={styles.sheetHeader}>
                     <SheetTitle className={styles.sheetTitle}>Select Action</SheetTitle>

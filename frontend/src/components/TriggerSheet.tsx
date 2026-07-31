@@ -44,8 +44,9 @@ const styles = {
     formContainer: "space-y-6 px-4"
 }
 
-export const TriggerSheet = ({ onSelect }: {
-    onSelect: (kind: NodeKind, metadata: NodeMetadata) => void
+export const TriggerSheet = ({ onSelect, onClose }: {
+    onSelect: (kind: NodeKind, metadata: NodeMetadata) => void,
+    onClose: () => void
 }) => {
 
     const [metadata, setMetadata] = useState<PriceTriggerMetadata | TimerNodeMetadata>({
@@ -67,8 +68,11 @@ export const TriggerSheet = ({ onSelect }: {
     const isPriceMetadata = (m: any): m is PriceTriggerMetadata => 'asset' in m;
 
     return (
-        <Sheet open={true}>
-            <SheetTrigger>Op en</SheetTrigger>
+        <Sheet open={true} onOpenChange={(open) => {
+            if (!open) {
+                onClose();
+            }
+        }}>
             <SheetContent className={styles.sheetContent}>
                 <SheetHeader className={styles.sheetHeader}>
                     <SheetTitle className={styles.sheetTitle}>Select Trigger</SheetTitle>
