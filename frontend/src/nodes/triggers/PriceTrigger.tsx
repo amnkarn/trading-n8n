@@ -12,12 +12,12 @@ export type PriceTriggerMetadata={
 }
 
 const styles = {
-  container: "flex flex-col items-center justify-center px-4 py-3 min-w-[130px] min-h-[60px] bg-white/90 dark:bg-slate-900/90 backdrop-blur-xl border border-slate-200 dark:border-slate-700 shadow-xl dark:shadow-2xl rounded-lg text-slate-800 dark:text-slate-100 font-medium transition-all hover:border-emerald-500 hover:shadow-emerald-500/20",
-  header: "flex items-center gap-1.5 mb-1.5 text-emerald-500 dark:text-emerald-400",
-  title: "text-[10px] uppercase tracking-wider font-bold",
-  body: "flex items-baseline gap-1.5",
-  asset: "text-sm font-bold",
-  price: "text-sm text-emerald-600 dark:text-emerald-300",
+  container: "flex flex-col items-center justify-center px-3 py-2 min-w-[110px] min-h-[50px] bg-white/90 dark:bg-slate-900/90 backdrop-blur-xl border border-slate-200 dark:border-slate-700 shadow-xl dark:shadow-2xl rounded-lg text-slate-800 dark:text-slate-100 font-medium transition-all hover:border-emerald-500 hover:shadow-emerald-500/20",
+  header: "flex items-center gap-1 mb-1 text-emerald-500 dark:text-emerald-400",
+  title: "text-[9px] uppercase tracking-wider font-bold",
+  body: "flex items-baseline gap-1",
+  asset: "text-xs font-bold",
+  price: "text-xs text-emerald-600 dark:text-emerald-300",
   handle: "w-2.5 h-2.5 bg-emerald-500 border-2 border-white dark:border-slate-900"
 }
 

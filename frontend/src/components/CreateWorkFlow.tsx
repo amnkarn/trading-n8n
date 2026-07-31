@@ -6,10 +6,6 @@ import {
     addEdge,
     useReactFlow,
     ReactFlowProvider,
-
-    type NodeChange,
-    type EdgeChange,
-    type Connection,
     type Edge,
     Background,
 } from '@xyflow/react';
@@ -40,11 +36,10 @@ export interface NodeType {
         metadata: any;
         label: string;
     };
-
     position: {
         x: number,
         y: number
-    }
+    },
 }
 export type NodeMetadata = any;
 
@@ -105,12 +100,12 @@ function WorkflowEditor() {
     );
 
     return (
-        <div className={`w-screen h-[100dvh] overflow-hidden flex flex-col transition-colors duration-300 ${theme === 'dark' ? 'dark bg-slate-950 text-slate-100' : 'bg-slate-50 text-slate-900'}`}>
+        <div className={`w-screen h-dvh overflow-hidden flex flex-col transition-colors duration-300 ${theme === 'dark' ? 'dark bg-slate-950 text-slate-100' : 'bg-slate-50 text-slate-900'}`}>
             {/* Top Navbar */}
             <header className="h-14 border-b border-slate-200 dark:border-slate-800 bg-white/50 dark:bg-slate-950/50 backdrop-blur-md flex items-center justify-between px-6 z-10 shrink-0">
                 <div className="flex items-center gap-3">
-                    <div className="w-8 h-8 rounded-md bg-gradient-to-br from-emerald-500 to-cyan-500 flex items-center justify-center font-bold text-lg shadow-lg shadow-emerald-500/20 text-white">
-                        N
+                    <div className="w-8 h-8 rounded-md bg-linear-to-br from-emerald-500 to-cyan-500 flex items-center justify-center font-bold text-lg shadow-lg shadow-emerald-500/20 text-white">
+                        <img src="./bot.png" alt="#bot" />
                     </div>
                     <span className="font-bold text-lg tracking-wide text-slate-800 dark:text-slate-100">Automations</span>
                 </div>
@@ -124,10 +119,10 @@ function WorkflowEditor() {
             </header>
 
             {/* Canvas Area */}
-            <div className={`w-full flex-grow relative ${theme === 'dark' ? 'bg-[radial-gradient(ellipse_80%_80%_at_50%_-20%,rgba(120,119,198,0.15),rgba(255,255,255,0))]' : "bg-[url('/image.png')] bg-repeat"}`}>
+            <div className={`w-full grow relative ${theme === 'dark' ? 'bg-[radial-gradient(ellipse_80%_80%_at_50%_-20%,rgba(120,119,198,0.15),rgba(255,255,255,0))]' : "bg-[url('/image.png')] bg-repeat"}`}>
                 {!nodes.length && !isTriggerSheetOpen && (
                     <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-10">
-                        <button onClick={() => setIsTriggerSheetOpen(true)} className="px-6 py-3 bg-gradient-to-r from-emerald-500 to-cyan-500 text-white font-bold rounded-lg shadow-lg hover:shadow-xl transition-all hover:scale-105">
+                        <button onClick={() => setIsTriggerSheetOpen(true)} className="px-6 py-3 bg-linear-to-r from-emerald-500 to-cyan-500 text-white font-bold rounded-lg shadow-lg hover:shadow-xl transition-all hover:scale-105">
                             Add Initial Trigger
                         </button>
                     </div>
@@ -151,6 +146,7 @@ function WorkflowEditor() {
                             ]);
                             setIsTriggerSheetOpen(false);
                         }}
+                        //@ts-ignore
                         onClose={() => setIsTriggerSheetOpen(false)}
                     />
                 )}
@@ -185,10 +181,11 @@ function WorkflowEditor() {
                             );
                             setSelectAction(null);
                         }}
+                        //@ts-ignore
                         onClose={() => setSelectAction(null)}
                     />
                 )}
-                
+
                 <ReactFlow
                     nodes={nodes}
                     edges={edges}

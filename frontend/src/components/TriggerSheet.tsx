@@ -5,7 +5,6 @@ import {
     SheetFooter,
     SheetHeader,
     SheetTitle,
-    SheetTrigger,
 } from "@/components/ui/sheet"
 import type { NodeKind } from "./CreateWorkFlow"
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "./ui/select";
@@ -119,6 +118,7 @@ export const TriggerSheet = ({ onSelect, onClose }: {
                                 <Select
                                     value={isPriceMetadata(metadata) ? metadata.asset : ''}
                                     onValueChange={(value) => {
+                                        //@ts-ignore
                                         setMetadata(prev => ({
                                             ...prev,
                                             asset: value,
